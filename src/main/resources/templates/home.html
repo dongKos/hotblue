@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+	<th:block th:include="layout/header"></th:block>
+	<link type="text/css" rel="stylesheet" th:href="@{/css/style.css}" />
+</head>
+
+<body>
+	<div class="main-container">
+		<div class="logo text-center"><img th:src="@{/images/logo.png}" alt="Logo"></div>
+		<div class="card-body">
+			<label>ID</label>
+			<div class="mb-3">
+				<input id="nickname" type="text" name="nickname" class="form-control" placeholder="ID" aria-label="Email"
+					aria-describedby="email-addon">
+			</div>
+			<label>PASSWORD</label>
+			<div class="mb-3">
+				<input id="providerId" type="password" name="providerId" class="form-control" placeholder="PASSWORD"
+					aria-label="Password" aria-describedby="password-addon">
+			</div>
+			<div class="text-center">
+				<button onclick="login();" type="button" class="btn bg-gradient-info w-100 mt-4 mb-0">Log in</button>
+			</div>
+		</div>
+		<div class="copyright text-center">
+			Copyright ©
+			<script>
+				document.write(new Date().getFullYear())
+			</script>,
+			&nbsp;&nbsp;All rights reserved by <i class="material-icons favorite">favorite</i> Pick Studio
+		</div>
+	</div>
+</body>
+<th:block layout:fragment="script">
+	<script type="text/javascript">
+		localStorage.clear();
+		
+		function login() {
+			var data = {
+				"nickname":$("#nickname").val(),
+				"providerId": $("#providerId").val()	
+			};
+			
+			$.ajax({
+				url: '/login',
+				method: 'POST',
+				data: JSON.stringify(data),
+				success: function (data) {
+					console.log(data);
+					if (data.code == 200) {
+						console.log(data);
+					}
+				},
+				erorr: function (err) {
+					console.log(data);
+				}
+			})
+			
+		}
+	</script>
+</th:block>
+</html>

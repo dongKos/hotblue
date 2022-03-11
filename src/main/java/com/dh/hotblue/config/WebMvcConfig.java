@@ -1,12 +1,10 @@
 package com.dh.hotblue.config;
 
 
-import org.springframework.boot.web.servlet.view.MustacheViewResolver;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.dh.hotblue.util.BuddyStockInterceptor;
@@ -15,15 +13,15 @@ import com.dh.hotblue.util.BuddyStockInterceptor;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-	@Override
-	public void configureViewResolvers(ViewResolverRegistry registry) {
-		MustacheViewResolver resolver = new MustacheViewResolver();
-		resolver.setCharset("UTF-8");
-		resolver.setContentType("text/html; charset=UTF-8");
-		resolver.setPrefix("classpath:/templates/");
-		resolver.setSuffix(".html");
-		registry.viewResolver(resolver);
-	}
+//	@Override
+//	public void configureViewResolvers(ViewResolverRegistry registry) {
+//		MustacheViewResolver resolver = new MustacheViewResolver();
+//		resolver.setCharset("UTF-8");
+//		resolver.setContentType("text/html; charset=UTF-8");
+//		resolver.setPrefix("classpath:/templates/");
+//		resolver.setSuffix(".html");
+//		registry.viewResolver(resolver);
+//	}
 	
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -43,6 +41,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	    registry.addRedirectViewController("/api/swagger-resources/configuration/ui", "/swagger-resources/configuration/ui");
 	    registry.addRedirectViewController("/api/swagger-resources/configuration/security", "/swagger-resources/configuration/security");
 	    registry.addRedirectViewController("/api/swagger-resources", "/swagger-resources");
+	    registry.addViewController("/").setViewName("home");
+		registry.addViewController("/home").setViewName("home");
+		registry.addViewController("/loginPage").setViewName("login");
+		registry.addViewController("/admin").setViewName("admin");
+		registry.addViewController("/youtuberPage").setViewName("youtuberPage");
+		registry.addViewController("/admin/user").setViewName("admin/user");
+		registry.addViewController("/admin/youtuber").setViewName("admin/youtuber");
 	}
 
 	@Override

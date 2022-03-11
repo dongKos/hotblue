@@ -23,9 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 public class Scheduler {
 	
 	@Value("${chrome-driver.path}") String path;
+	@Value("${spring.profiles.active}") String profile;
 	
 	//10분마다 buddyCnt 업데이트
-	@Scheduled(cron = "0 0/10 * * * *")
+//	@Scheduled(cron = "0 0/10 * * * *")
 	public void updateBuddyCnt() {
 		logStartTime("updateBuddyCnt : ");
 		System.out.println("path : " + path);
@@ -33,12 +34,9 @@ public class Scheduler {
 		System.setProperty("webdriver.chrome.driver", path);
 		ChromeOptions options;
 		options = new ChromeOptions();
-		options.setPageLoadStrategy(PageLoadStrategy.EAGER);
-		options.setProxy(null);
-		options.setExperimentalOption("excludeSwitches", Collections.singletonList("enable-automation"));
-		options.setExperimentalOption("useAutomationExtension", false);
-//		options.addArguments("--headless", "--disable-gpu");
-		options.addArguments("--no-sandbox");
+		System.out.println(profile);
+		if(profile.equals("product"))
+			options.addArguments("--headless", "--disable-dev-shm-usage", "--no-sandbox");
 		WebDriver driver = new ChromeDriver(options);
 	}
 

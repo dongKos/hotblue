@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+	<th:block th:include="layout/header"></th:block>
+	<link type="text/css" rel="stylesheet" th:href="@{/css/youtuber/style.css}" />
+</head>
+
+<body class="g-sidenav-show  bg-gray-100" style="overflow: hidden;">
+	<th:block th:include="layout/sidenav"></th:block>
+	<main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ps ps--active-y">
+		<!-- Navbar -->
+		<th:block th:include="layout/topnav"></th:block>
+		<div class="container-fluid py-4">
+			<div class="row">
+				<div class="col-12">
+					<div class="card mb-4">
+						<div class="card-header">
+							<div class="row">
+								<div class="col-7 d-flex align-items-center">
+									<h6 class="mb-0">버디 요청 관리</h6>
+								</div>
+								<div class="col-3 ms-md-auto pe-md-3 d-flex align-items-center search-div">
+									<div class="input-group">
+										<span class="input-group-text text-body"><i class="fas fa-search"
+												aria-hidden="true"></i></span>
+										<input type="text" class="form-control" placeholder="Type here..."
+											id="requestSearch" onkeypress="search_btn(event)" minlength="2" required>
+									</div>
+								</div>
+								<div class="col-2 text-end accept-btn">
+									<a class="btn bg-gradient-dark mb-0" onclick="accept_btn()"><i class="fas fa-plus"
+											aria-hidden="true"></i>&nbsp;&nbsp;Accept Request</a>
+								</div>
+							</div>
+						</div>
+						<div class="card-body px-0 pt-0 pb-2">
+							<div class="table-responsive p-0">
+								<table class="table align-items-center justify-content-center mb-0" id="requestTable">
+									<thead>
+										<tr>
+											<th class="col-1">
+												<div class="form-check"><input class="form-check-input"
+														type="checkbox" value="" id="chkAllRequest"></div>
+											</th>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 col-1">
+												NO</th>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-2">
+												닉네임</th>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-3">
+												이메일</th>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-4">
+												인사말</th>
+											<th class="col-1"></th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="input-group">
+				<input type="hidden" class="form-control" id="userMail" aria-describedby="basic-addon3"
+					th:value="${userMail}">
+				<input type="hidden" class="form-control" id="username" aria-describedby="basic-addon3"
+					th:value="${username}">
+				<input type="hidden" class="form-control" id="picture" aria-describedby="basic-addon3"
+					th:value="${picture}">
+			</div>
+			<div class="row">
+				<div class="col-md-4">
+					<div class="modal fade" id="show-request" tabindex="-1" role="dialog" aria-labelledby="show-request"
+						aria-hidden="true">
+						<div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h6 class="modal-title" id="modal-title-default">인사말 상세 보기</h6>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+										<span aria-hidden="true">×</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<div class="form-group">
+										<textarea class="form-control greeting-textarea" id="greetings" readonly></textarea>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn bg-gradient-secondary"
+										data-bs-dismiss="modal">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<th:block th:include="layout/footer"></th:block>
+		</div>
+	</main>
+</body>
+<script src="/js/youtuber/request.js"></script>
+<th:block layout:fragment="script">
+	<script type="text/javascript">
+		localStorage.setItem('userMail', $('#userMail').val());
+		localStorage.setItem('username', $('#username').val());
+		localStorage.setItem('picture', $('#picture').val());
+
+		/* User Info Setting */
+		$('#userInfo').attr('data-bs-original-title', localStorage.getItem('username'));
+		$('#userInfo img').attr('src', localStorage.getItem('picture'));
+		$('#userInfo img').attr('alt', localStorage.getItem('username'));
+	</script>
+</th:block>
+
+</html>

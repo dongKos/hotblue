@@ -1,0 +1,95 @@
+.notice-form .input-group {
+	margin-bottom: 0.5rem;
+}
+
+.notice-url {
+	cursor: pointer;
+	color: #3A416F;
+}
+
+#noticeTable .fa-calendar-alt {
+	margin: 12px 0;
+}
+
+#noticeTable .fa-calendar-alt span {
+	vertical-align: text-top;
+}
+
+#notice-edit .modal-body .input-group {
+	margin-bottom: 0.5rem;
+}
+
+.add-btn {
+	width: 177px;
+}
+
+.remove-btn {
+	width: 200px;
+}
+
+.search-div {
+	padding-right: 0px !important;
+}
+
+.check-box {
+	padding-left: 2.73em !important;
+}
+
+.order-btn {
+	padding-left: 0.73em !important;
+}
+
+.i-order {
+	font-size: 1.23rem;
+}
+
+#youtuberTable th:first-child, #userTable th:first-child {
+	padding-left: 0.5rem;
+}
+
+.display-none {
+	display: none;
+}
+
+.no-data {
+	padding-top: 1rem !important;
+}
+
+/*#sortable .list-group-item {
+	cursor: move;
+}*/
+.recommended-div {
+	padding : 0 0.5rem !important;
+}
+
+#sortable {
+	border-style: hidden !important;
+	border-color: transparent !important;
+}
+
+#sortable tr {
+	cursor: move;
+	background-color: #f8f9fa !important;
+}
+
+#sortable tr:hover {
+	background-color: #e9ecef !important;
+}
+
+#recommendedTable {
+	border-collapse: separate !important;
+	border-spacing: 0 0.5rem;
+}
+
+#recommendedTable thead th {
+	border-bottom: none !important;
+}
+
+#sortable td:first-child,
+#sortable th:first-child {
+  border-radius: 0.75rem 0 0 0.75rem;
+}
+#sortable td:last-child,
+#sortable th:last-child {
+  border-radius: 0 0.75rem 0.75rem 0;
+}

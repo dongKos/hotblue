@@ -4,21 +4,32 @@ spring:
       "dev": "local,common"
       "product": "prd,common"
 ---
+server:
+  port: 8080
 spring:
+  devtools:
+    livereload:
+      enabled: true
   config:
     activate:
       on-profile: "local"
 chrome-driver: 
   path: '/driver/chromedriver.exe'
 ---
+server:
+  port: 5000
 spring:
   config:
     activate:
       on-profile: "prd"
 chrome-driver: 
-  path: '/usr/bin/chromedriver.exe'
+  path: '/usr/bin/chromedriver'
 ---
 spring:
+  thymeleaf:
+    prefix: classpath:templates/
+    suffix: .html
+    cache: false
   config:
     activate:
       on-profile: "common"
@@ -35,17 +46,17 @@ spring:
             physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
-        generate_statistics: true
+#        generate_statistics: true
         format_sql: true
         order_inserts: true
         order_updates: true
         jdbc: 
           batch_size: 20000
     show-sql: false
-  mustache:
-    suffix: .html
-  mvc:
-      static-path-pattern: /static/**
+#  mustache:
+#    suffix: .html
+#  mvc:
+#      static-path-pattern: /static/**
   servlet:
       multipart:
           max-file-size: 21MB
@@ -66,7 +77,6 @@ logging:
                         JdbcTemplate: DEBUG
                         StatementCreatorUtils: TRACE
 server:
-    port: 8080
     error:
       include-stacktrace: never
       path: '/error'
