@@ -8,11 +8,15 @@ spring:
   config:
     activate:
       on-profile: "local"
+chrome-driver: 
+  path: '/driver/chromedriver.exe'
 ---
 spring:
   config:
     activate:
       on-profile: "prd"
+chrome-driver: 
+  path: '/usr/bin/chromedriver.exe'
 ---
 spring:
   config:
