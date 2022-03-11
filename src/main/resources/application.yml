@@ -1,0 +1,79 @@
+spring:
+  profiles:
+    group:
+      "dev": "local,common"
+      "product": "prd,common"
+---
+spring:
+  config:
+    activate:
+      on-profile: "local"
+logging:
+    level:
+        root: info
+        org:
+            hibernate:
+                SQL: DEBUG
+                type:
+                    descriptor:
+                        sql: 
+                            BasicBinder: TRACE
+            springframework:
+                jdbc:
+                    core:
+                        JdbcTemplate: DEBUG
+                        StatementCreatorUtils: TRACE
+---
+spring:
+  redis:
+    host: buddystock-redis.zdn88r.0001.apn2.cache.amazonaws.com
+    client-name: "buddystock-redis"
+  config:
+    activate:
+      on-profile: "prd"
+---
+spring:
+  config:
+    activate:
+      on-profile: "common"
+  datasource:
+        url: jdbc:mysql://rank.cv3q0ocdoz19.ap-northeast-2.rds.amazonaws.com:3306/hotblue?serverTimezone=UTC&characterEncoding=UTF-8
+        username: admin
+        password: jong15781578!
+        driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+        ddl-auto: update
+        naming:
+            physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        generate_statistics: true
+        format_sql: true
+        order_inserts: true
+        order_updates: true
+        jdbc: 
+          batch_size: 20000
+    show-sql: false
+  mustache:
+    suffix: .html
+  mvc:
+      static-path-pattern: /static/**
+  servlet:
+      multipart:
+          max-file-size: 21MB
+          max-request-size: 21MB
+server:
+    port: 8080
+    error:
+      include-stacktrace: never
+      path: '/error'
+      whitelabel:
+        enabled: false 
+    servlet:
+        context-path: /
+        encoding:
+            charset: UTF-8
+            enabled: true
+            force: true
