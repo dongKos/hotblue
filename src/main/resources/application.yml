@@ -8,26 +8,8 @@ spring:
   config:
     activate:
       on-profile: "local"
-logging:
-    level:
-        root: info
-        org:
-            hibernate:
-                SQL: DEBUG
-                type:
-                    descriptor:
-                        sql: 
-                            BasicBinder: TRACE
-            springframework:
-                jdbc:
-                    core:
-                        JdbcTemplate: DEBUG
-                        StatementCreatorUtils: TRACE
 ---
 spring:
-  redis:
-    host: buddystock-redis.zdn88r.0001.apn2.cache.amazonaws.com
-    client-name: "buddystock-redis"
   config:
     activate:
       on-profile: "prd"
@@ -64,6 +46,21 @@ spring:
       multipart:
           max-file-size: 21MB
           max-request-size: 21MB
+logging:
+    level:
+        root: info
+        org:
+            hibernate:
+                SQL: DEBUG
+                type:
+                    descriptor:
+                        sql: 
+                            BasicBinder: TRACE
+            springframework:
+                jdbc:
+                    core:
+                        JdbcTemplate: DEBUG
+                        StatementCreatorUtils: TRACE
 server:
     port: 8080
     error:
