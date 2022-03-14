@@ -43,11 +43,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 	    registry.addRedirectViewController("/api/swagger-resources", "/swagger-resources");
 	    registry.addViewController("/").setViewName("home");
 		registry.addViewController("/home").setViewName("home");
-		registry.addViewController("/loginPage").setViewName("login");
-		registry.addViewController("/admin").setViewName("admin");
-		registry.addViewController("/youtuberPage").setViewName("youtuberPage");
-		registry.addViewController("/admin/user").setViewName("admin/user");
-		registry.addViewController("/admin/youtuber").setViewName("admin/youtuber");
+		registry.addViewController("/product/list").setViewName("product/list");
 	}
 
 	@Override

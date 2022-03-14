@@ -56,14 +56,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				// 폼 로그인, http basic 사용안함
 				.formLogin().disable().httpBasic().disable();
 
-		// 회원가입, 로그인, sms인증, 닉네임 중복체크, 회원가입 여부 확인,  토큰갱신 -> 허용
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/login").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.POST, "/user").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/user/refreshToken").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/user/validateNickname/**").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.POST, "/user/validateProvider").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.GET, "/user/nickname/**").permitAll();
-//		http.authorizeRequests().antMatchers(HttpMethod.GET, "/test/**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/selenium/**").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/init/**").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/swagger-ui**").permitAll();
 		
@@ -75,6 +69,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// 인증, 인가에 사용할 jwt 필터 등록
 		http.addFilter(jwtAuthenticationFilter).addFilterBefore(new JwtAuthorizationFilter(authenticationManager(), userRepository, commonUtil),
 				UsernamePasswordAuthenticationFilter.class);
-//		http.addFilterBefore(new MainFilter(), SecurityContextPersistenceFilter.class);
 	}
 }

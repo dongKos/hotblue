@@ -5,10 +5,20 @@
 <head>
 	<th:block th:include="layout/header"></th:block>
 	<link type="text/css" rel="stylesheet" th:href="@{/css/admin/style.css}" />
+	<style>
+		table {
+			table-layout: fixed;
+		}
+		table tbody td {
+			text-overflow: ellipsis;
+		    overflow: hidden;
+		    white-space: nowrap;
+		}
+	</style>
 </head>
 
 <body class="g-sidenav-show  bg-gray-100" style="overflow: hidden;">
-	<th:block th:include="layout/sidenav"></th:block>
+	<!--<th:block th:include="layout/sidenav"></th:block>-->
 	<main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ps ps--active-y">
 		<!-- Navbar -->
 		<th:block th:include="layout/topnav"></th:block>
@@ -19,7 +29,7 @@
 						<div class="card-header">
 							<div class="row">
 								<div class="col-7 d-flex align-items-center">
-									<h6 class="mb-0">사용자 관리</h6>
+									<h6 class="mb-0">상품 리스트</h6>
 								</div>
 								<div class="col-3 ms-md-auto pe-md-3 d-flex align-items-center search-div">
 									<div class="input-group">
@@ -30,36 +40,45 @@
 									</div>
 								</div>
 								<div class="col-2 text-end add-btn">
-									<a class="btn bg-gradient-dark mb-0" onclick="add_btn()"><i class="fas fa-plus"
-											aria-hidden="true"></i>&nbsp;&nbsp;Add Youtuber</a>
+									<a class="btn bg-gradient-dark mb-0" onclick="javascript:$('#file').click();"><i class="fas fa-plus"
+											aria-hidden="true"></i>&nbsp;&nbsp;상품 엑셀 업로드</a>
+											<div style="display: none;">
+												<form id="form">
+													<input type="file" name="file" id="file">
+												</form>
+											</div>
 								</div>
 							</div>
 						</div>
 						<div class="card-body px-0 pt-0 pb-2">
 							<div class="table-responsive p-0">
-								<table class="table align-items-center justify-content-center mb-0" id="userTable">
+								<table class="table align-items-center justify-content-center mb-0" id="prdTable">
 									<thead>
 										<tr>
-											<th class="col-1">
-												<div class="form-check check-box"><input class="form-check-input"
-														type="checkbox" value="" id="chkAllUser"></div>
-											</th>
 											<th
 												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 col-1">
-												ID</th>
+												No</th>
 											<th
 												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-1">
-												닉네임</th>
+												키워드</th>
 											<th
 												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-2">
-												이름</th>
+												상점명</th>
 											<th
 												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-3">
-												이메일</th>
+												상품명</th>
 											<th
 												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-2">
-												핸드폰번호</th>
-											<th class="col-1"></th>
+												원부순위</th>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-2">
+												순위</th>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-2">
+												측정일시</th>
+											<th
+												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-2">
+												메모</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -104,6 +123,6 @@
 		</div>
 	</main>
 </body>
-<script src="/js/admin/user.js"></script>
+<script src="/js/product/list.js"></script>
 
 </html>

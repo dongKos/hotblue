@@ -1,27 +1,26 @@
 $(function() {
-	user();
-	$('#userSearch').val('');
-
+	
+	getProducts();
 	$('#chkAllUser').click(function() {
 		if ($('#chkAllUser').is(':checked')) $('input:checkbox[name=chkUser]').prop('checked', true);
 		else $('input:checkbox[name=chkUser]').prop('checked', false)
 	});
+	
+	$('#file').on('change', excelUpload);
 });
 
-function user() {
+function getProducts() {
 	$.ajax({
-		url: '/user',
-		method: 'GET',
-		data: { flag: 'N' },
+		type: "POST",
+		url: "/product",
 		success: function(data) {
 			console.log(data);
-			var items = data.data;
-			createTable(items);
+			createTable(data.data);
 		},
-		error: function(err) {
-			console.log(err);
+		err: function(err) {
+			console.log("err:", err)
 		}
-	});
+	})
 }
 
 function search_btn(e) {
@@ -56,70 +55,38 @@ function search_btn(e) {
 	}
 }
 
-function add_btn() {
-	var chkUserId = [];
-	var chkNickname = [];
-	$('input:checkbox[name=chkUser]:checked').each(function(i) {
-		chkUserId.push($(this).attr('id'));
-		chkNickname.push($(this).attr('nickname'));
-	});
-
-	if (chkUserId.length < 1) {
-		alert('사용자를 선택하세요.');
-		return;
-	}
-
-	console.log('체크한 유저 : ' + chkUserId + ' , 체크한 유저 수 : ' + chkUserId.length);
-
-	if (confirm(chkNickname + '님을 유투버디로 추가하시겠습니까?')) {
-		var data = {
-			userList: chkUserId,
-			flag: 'Y'
-		};
-
-		$.ajax({
-			url: '/user/updateYoutuberYn',
-			method: 'POST',
-			data: JSON.stringify(data),
-			contentType: "application/json",
-			success: function(result) {
-				console.log(result);
-
-				if (result.data) {
-					//location.reload();
-					location.href = '/admin/youtuber';
-					alert(chkNickname + '님을 유투버디로 추가하였습니다.');
-				} else {
-					alert('유투버디 추가 실패하였습니다.');
-				}
-			},
-			error: function(err) {
-				alert('유투버디 추가 실패하였습니다.');
-				console.log(err);
-			}
-		});
-	}
+function excelUpload() {
+	$.ajax({
+		type: "POST",
+		url: "/product/excelUpload",
+		processData: false,
+		contentType: false,
+		enctype: 'multipart/form-data',
+		data: new FormData($('#form') [0]),
+		success: function(rtn) {
+			
+			console.log(rtn);
+		},
+		err: function(err) {
+			console.log("err:", err)
+		}
+	})
 }
 
 function createTable(items) {
-	var tbody = $('#userTable tbody');
+	var tbody = $('#prdTable tbody');
 	if (items.length > 0) {
 
 		for (var i = 0; i < items.length; i++) {
 			var html = "<tr>";
-			html += "<td><div class='form-check check-box'>"
-				+ "<input class='form-check-input' type='checkbox' value='' name='chkUser' id='" + items[i].userId + "' nickname='" + items[i].nickname + "' onclick='chk_user()'>"
-				+ "</div></td>";
-			html += "<td><p class='text-sm font-weight-bold mb-0 px-3'>" + items[i].userId + "</p></td>";
-			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].nickname + "</p></td>";
-			html += "<td><p class='text-sm font-weight-bold mb-0'>" + (items[i].username == null ? '' : items[i].username) + "</p></td>";
-			html += "<td class='align-middle'><p class='text-sm font-weight-bold mb-0'>" + items[i].userMail + "</p></td>";
-			html += "<td class='align-middle'><p class='text-sm font-weight-bold mb-0'>" + items[i].phoneNum + "</p></td>";
-			html += "<td class='align-middle text-center'>"
-				+ "<a class='btn btn-link text-danger text-gradient px-3 mb-0' id='" + items[i].userId + "' nickname='" + items[i].nickname + "' data-bs-target='#user-delete' data-bs-toggle='modal' onclick='delete_modal(this)'>"
-				+ "<i class='far fa-trash-alt me-2' aria-hidden='true'></i>Delete"
-				+ "</a>"
-				+ "</td>";
+			html += "<td><p class='text-sm font-weight-bold mb-0 px-3'>" + items[i].id + "</p></td>";
+			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].keyword + "</p></td>";
+			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].shopName + "</p></td>";
+			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].prdName + "</p></td>";
+			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].onebuRank + "</p></td>";
+			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].prdRank + "</p></td>";
+			html += "<td class='align-middle'><p class='text-sm font-weight-bold mb-0'>" + items[i].workDate + "</p></td>";
+			html += "<td class='align-middle'><p class='text-sm font-weight-bold mb-0'>" + items[i].memo + "</p></td>";
 			html += "</tr>";
 
 			tbody.append(html);
@@ -139,7 +106,7 @@ function createTable(items) {
 			+ "<span class='nav-link-text ms-2 text-sm'>데이터가 없습니다.</span>"
 			+ "</td>";
 		html += "</tr>";
-		
+
 		tbody.append(html);
 	}
 }

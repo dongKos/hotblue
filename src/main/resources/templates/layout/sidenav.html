@@ -13,7 +13,7 @@
 		<ul class="navbar-nav">
 			<th:block sec:authorize="hasRole('ROLE_USER')">
 				<li class="nav-item">
-					<a class="nav-link" th:href="@{/admin}">
+					<a class="nav-link" th:href="@{/product/list}">
 						<div
 							class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
 							<svg class="text-dark" width="16px" height="16px" viewBox="0 0 40 44" version="1.1"
@@ -37,14 +37,11 @@
 							</svg>
 
 						</div>
-						<span class="nav-link-text ms-1" title="Notice">공지사항</span>
+						<span class="nav-link-text ms-1" title="Notice">상품리스트</span>
 					</a>
 				</li>
-				<li class="nav-item mt-3">
-					<h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">User Management</h6>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/admin/user}">
+				<!--<li class="nav-item">
+					<a class="nav-link" th:href="@{/product/list}">
 						<div
 							class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
 							<svg class="text-dark" width="16px" height="16px" viewBox="0 0 46 42" version="1.1"
@@ -137,7 +134,7 @@
 						<span class="nav-link-text ms-1" title="Request">요청 관리</span>
 					</a>
 				</li>
-			</th:block>
+			</th:block>-->
 		</ul>
 	</div>
 </aside>
