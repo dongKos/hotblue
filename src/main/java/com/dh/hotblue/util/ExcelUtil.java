@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -22,19 +23,19 @@ import lombok.extern.slf4j.Slf4j;
 public class ExcelUtil {
 	// 각 셀의 데이터타입에 맞게 값 가져오기
 		public String getCellValue(XSSFCell cell) {
-
 			String value = "";
 			
 			if(cell == null){
 				return value;
 			}
 
+			DataFormatter formatter = new DataFormatter();
 			switch (cell.getCellType()) {
 				case STRING:
 					value = cell.getStringCellValue();
 					break;
 				case NUMERIC:
-					value = (int) cell.getNumericCellValue() + "";
+					value = formatter.formatCellValue(cell);
 					break;
 				default:
 					break;

@@ -37,7 +37,7 @@ spring:
     activate:
       on-profile: "common"
   datasource:
-        url: jdbc:mysql://rank.cv3q0ocdoz19.ap-northeast-2.rds.amazonaws.com:3306/hotblue?serverTimezone=UTC&characterEncoding=UTF-8
+        url: jdbc:mysql://rank.cv3q0ocdoz19.ap-northeast-2.rds.amazonaws.com:3306/hotblue?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
         username: admin
         password: jong15781578!
         driver-class-name: com.mysql.cj.jdbc.Driver

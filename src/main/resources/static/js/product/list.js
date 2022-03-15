@@ -15,7 +15,8 @@ function getProducts() {
 		url: "/product",
 		success: function(data) {
 			console.log(data);
-			createTable(data.data);
+			if(data.data != null)
+				createTable(data.data);
 		},
 		err: function(err) {
 			console.log("err:", err)
@@ -82,8 +83,9 @@ function createTable(items) {
 			html += "<td><p class='text-sm font-weight-bold mb-0 px-3'>" + items[i].id + "</p></td>";
 			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].keyword + "</p></td>";
 			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].shopName + "</p></td>";
-			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].prdName + "</p></td>";
+			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].nvmid + "</p></td>";
 			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].onebuRank + "</p></td>";
+			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].onebuInnerRank + "</p></td>";
 			html += "<td><p class='text-sm font-weight-bold mb-0'>" + items[i].prdRank + "</p></td>";
 			html += "<td class='align-middle'><p class='text-sm font-weight-bold mb-0'>" + items[i].workDate + "</p></td>";
 			html += "<td class='align-middle'><p class='text-sm font-weight-bold mb-0'>" + items[i].memo + "</p></td>";

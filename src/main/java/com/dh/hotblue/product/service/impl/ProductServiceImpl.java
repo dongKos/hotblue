@@ -3,6 +3,7 @@ package com.dh.hotblue.product.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,13 +43,17 @@ public class ProductServiceImpl implements ProductService {
 		for (Map<String, Object> map : listMap) {
 			ProductEntity prd = new ProductEntity();
 			prd.setKeyword(map.get("0").toString());
-			prd.setPrdName(map.get("1").toString());
-			String uri = prd.getPrdName();
-			MultiValueMap<String, String> parameters = 
-					UriComponentsBuilder.fromUriString(uri).build().getQueryParams();
-			List<String> param1 = parameters.get("nvMid");
-			prd.setNvmid(param1.get(0));
-			list.add(prd);
+			prd.setNvmid(map.get("1").toString());
+			prd.setOnebuOptionName(map.get("2").toString());
+			Optional<ProductEntity> optPrd = productRepository.findByNvmid(prd.getNvmid());
+			if(optPrd.isPresent()) {
+				optPrd.get().setKeyword(prd.getKeyword());
+				optPrd.get().setNvmid(prd.getNvmid());
+				optPrd.get().setOnebuOptionName(prd.getOnebuOptionName());
+				productRepository.save(optPrd.get());
+			} else {
+				list.add(prd);
+			}
 		}
 		productRepository.saveAll(list);
 		return result;
@@ -58,9 +63,19 @@ public class ProductServiceImpl implements ProductService {
 	public List<ProductList> findProduct(ProductSearch search) {
 		BooleanBuilder builder = new BooleanBuilder();
 		QProductEntity product = QProductEntity.productEntity;
-		return jpaQueryFactory.select(Projections.constructor(ProductList.class, product.id, product.keyword,
-				product.shopName, product.prdName, product.onebuRank, product.prdRank, product.workDate, product.memo,
-				product.createDate)).from(product).where(builder).fetch();
+		return jpaQueryFactory.select(Projections.constructor(ProductList.class, 
+				product.id, 
+				product.keyword,
+				product.shopName, 
+				product.onebuRank, 
+				product.onebuInnerRank,
+				product.prdRank, 
+				product.workDate, 
+				product.memo,
+				product.createdDateTime,
+				product.nvmid
+				))
+				.from(product).where(builder).fetch();
 	}
 
 }
