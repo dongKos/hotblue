@@ -30,7 +30,7 @@ public class SeleniumServiceImpl implements SeleniumService {
 //	@Transactional
 	@Override
 	public void work() {
-		List<ProductEntity> prds = productRepository.findAll();
+		List<ProductEntity> prds = productRepository.findAllEntityGraph();
 		WebDriver driver = pcDriver.getPcDriver();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		LocalDateTime now = LocalDateTime.now();
@@ -221,7 +221,7 @@ public class SeleniumServiceImpl implements SeleniumService {
 				}
 				productRepository.save(prd);
 			} catch(Exception e) {
-				
+				e.printStackTrace();
 			}
 		}
 		driver.quit();
@@ -264,7 +264,7 @@ public class SeleniumServiceImpl implements SeleniumService {
 					driver.get("https://search.shopping.naver.com/search/all?frm=NVSHATC&origQuery=" + prd.getKeyword() + "&pagingIndex=" + page + "&pagingSize=40&productSet=total&query=" + prd.getKeyword() + "&sort=rel&timestamp=&viewType=list");
 					Thread.sleep(2000);
 					for (int i = 1; i < 20; i++) {
-						Thread.sleep(100);
+						Thread.sleep(300);
 						js.executeScript("window.scrollBy(0, " + (1000 * i) + ")");
 					}
 					List<WebElement> list = driver.findElements(By.cssSelector("ul.list_basis li[class^=basicList_item]"));
@@ -309,7 +309,7 @@ public class SeleniumServiceImpl implements SeleniumService {
 						a.click();
 						ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
 						driver.switchTo().window(tabs.get(1));
-						Thread.sleep(1000);
+						Thread.sleep(2000);
 						//옵션 있는 경우 옵션 선택
 						if(!option.equals("")) {
 							try {
@@ -369,7 +369,7 @@ public class SeleniumServiceImpl implements SeleniumService {
 									//원부페이지 내에서 페이지 이동
 									el2.click();
 									onebuInnerRank = 0;
-									Thread.sleep(300);
+									Thread.sleep(1000);
 									
 									list = driver.findElements(By.cssSelector("ul[class^=productList_list_seller] li"));
 									//li 서칭
@@ -430,7 +430,7 @@ public class SeleniumServiceImpl implements SeleniumService {
 	@Override
 	public void multiWork() {
 		List<ProductEntity> prds = productRepository.findAllEntityGraph();
-		int driverCnt = 5;
+		int driverCnt = 3;
 		ArrayList<ArrayList<ProductEntity>> arrList = new ArrayList<ArrayList<ProductEntity>>();
 		for (int cnt = 0; cnt < driverCnt; cnt++) {
 			arrList.add(new ArrayList<ProductEntity>());
@@ -446,7 +446,7 @@ public class SeleniumServiceImpl implements SeleniumService {
 		try {
 			int driverIdx = 0;
 			for(ArrayList<ProductEntity> list : arrList) {
-				RunnableWorker runnable = new RunnableWorker(driverIdx, list, this);
+				RunnableWorker runnable = new RunnableWorker(driverIdx++, list, this);
 				
 				Thread thread = new Thread(runnable);
 				thread.start();

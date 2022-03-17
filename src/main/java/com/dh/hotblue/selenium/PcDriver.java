@@ -16,9 +16,16 @@ public class PcDriver {
 		System.setProperty("webdriver.chrome.driver", path);
 		ChromeOptions options;
 		options = new ChromeOptions();
-		if(profile.equals("product"))
-			options.addArguments("--headless", "--disable-dev-shm-usage", "--no-sandbox");
-		System.out.println(options);
+		if(profile.equals("product")) {
+			options.addArguments("--headless", 
+					"--disable-dev-shm-usage", 
+					"--no-sandbox"/* , "--remote-debugging-port=9222", "executable_path=/usr/bin/chromedriver" */);
+//		options.setBinary("/usr/bin/google-chrome");
+		}
+//		options.addArguments(
+////				"--headless", 
+//				"--disable-dev-shm-usage", 
+//				"--no-sandbox"/* , "--remote-debugging-port=9222", "executable_path=/usr/bin/chromedriver" */);
 		return new ChromeDriver(options);
 	}
 }
