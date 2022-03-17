@@ -9,16 +9,30 @@
 		table {
 			table-layout: fixed;
 		}
+
 		table tbody td {
 			text-overflow: ellipsis;
-		    overflow: hidden;
-		    white-space: nowrap;
+			overflow: hidden;
+			white-space: nowrap;
+		}
+		td, th {
+			border: 1px solid #e9ecef;
+		}
+
+		.pointer {
+			cursor: pointer;
+		}
+		.work-fail, .work-fail a {
+			color: orangered;
+		}
+		.table tbody tr:last-child td {
+			border-width: 1px !important;
 		}
 	</style>
 </head>
 
 <body class="g-sidenav-show  bg-gray-100" style="overflow: hidden;">
-	<!--<th:block th:include="layout/sidenav"></th:block>-->
+	<th:block th:include="layout/sidenav"></th:block>
 	<main class="main-content position-relative max-height-vh-100 h-100 mt-1 border-radius-lg ps ps--active-y">
 		<!-- Navbar -->
 		<th:block th:include="layout/topnav"></th:block>
@@ -29,24 +43,86 @@
 						<div class="card-header">
 							<div class="row">
 								<div class="col-7 d-flex align-items-center">
-									<h6 class="mb-0">상품 리스트</h6>
+									<h6 class="mb-0">상품 등록</h6>
 								</div>
-								<div class="col-3 ms-md-auto pe-md-3 d-flex align-items-center search-div">
-									<div class="input-group">
-										<span class="input-group-text text-body"><i class="fas fa-search"
-												aria-hidden="true"></i></span>
-										<input type="text" class="form-control" placeholder="Type here..."
-											id="userSearch" onkeypress="search_btn(event)" minlength="2" required>
+								<div class="col-5 ms-md-auto pe-md-3 d-flex align-items-center"
+									style="justify-content: right;">
+									<a class="btn bg-gradient-dark mb-0" onclick="javascript:$('#file').click();"><i
+											class="fas fa-plus" aria-hidden="true"></i>&nbsp;&nbsp;상품 엑셀 업로드</a>
+									&nbsp;&nbsp;
+									<a class="btn bg-gradient-dark mb-0" id="saveBtn">등록</a>
+									<div style="display: none;">
+										<form id="form">
+											<input type="file" name="file" id="file">
+										</form>
 									</div>
 								</div>
-								<div class="col-2 text-end add-btn">
-									<a class="btn bg-gradient-dark mb-0" onclick="javascript:$('#file').click();"><i class="fas fa-plus"
-											aria-hidden="true"></i>&nbsp;&nbsp;상품 엑셀 업로드</a>
-											<div style="display: none;">
-												<form id="form">
-													<input type="file" name="file" id="file">
-												</form>
-											</div>
+							</div>
+							<div class="row save_area">
+								<div class="col-3">
+									<div class="form-group">
+										<label for="example-text-input" class="form-control-label">키워드</label>
+										<input class="form-control" type="text" id="saveKeyword">
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="form-group">
+										<label for="example-text-input" class="form-control-label">원부옵션명</label>
+										<input class="form-control" type="text" id="saveOnebuOptionName">
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="form-group">
+										<label for="example-text-input" class="form-control-label">NVMID</label>
+										<input class="form-control" type="text" id="saveNvmid">
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="form-group">
+										<label for="example-text-input" class="form-control-label">메모</label>
+										<input class="form-control" type="text" id="saveMemo">
+									</div>
+								</div>
+							</div>
+							<br />
+							<div class="row">
+								<div class="col-7 d-flex align-items-center">
+									<h6 class="mb-0">검색 조건</h6>
+								</div>
+								<div class="col-5 ms-md-auto pe-md-3 d-flex align-items-center"
+									style="justify-content: right;">
+									<a class="btn bg-gradient-dark mb-0" id="searchBtn">검색</a>
+									<div style="display: none;">
+										<form id="form">
+											<input type="file" name="file" id="file">
+										</form>
+									</div>
+								</div>
+							</div>
+							<div class="row search_area">
+								<div class="col-3">
+									<div class="form-group">
+										<label for="example-text-input" class="form-control-label">키워드</label>
+										<input class="form-control" type="text" id="schKeyword">
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="form-group">
+										<label for="example-text-input" class="form-control-label">상점명</label>
+										<input class="form-control" type="text" id="schShopName">
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="form-group">
+										<label for="example-text-input" class="form-control-label">NVMID</label>
+										<input class="form-control" type="text" id="schNvmid">
+									</div>
+								</div>
+								<div class="col-3">
+									<div class="form-group">
+										<label for="example-text-input" class="form-control-label">메모</label>
+										<input class="form-control" type="text" id="schMemo">
+									</div>
 								</div>
 							</div>
 						</div>
@@ -56,32 +132,38 @@
 									<thead>
 										<tr>
 											<th
-												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 col-1">
+												class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 col-1">
 												No</th>
 											<th
-												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-1">
+												class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2 col-3">
 												키워드</th>
 											<th
-												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-2">
+												class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2 col-2">
 												상점명</th>
 											<th
-												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-3">
+												class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2 col-2">
+												원부옵션명</th>
+											<th
+												class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2 col-2">
 												nvmid</th>
 											<th
-												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-2">
+												class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2 col-1">
 												원부순위</th>
 											<th
-												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-2">
+												class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2 col-1">
 												원부내순위</th>
 											<th
-												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-2">
+												class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2 col-1">
 												단독순위</th>
 											<th
-												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-2">
+												class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2 col-2">
 												측정일시</th>
 											<th
-												class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 col-2">
+												class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2 col-1">
 												메모</th>
+											<th
+												class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2 col-1">
+												삭제</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -92,37 +174,54 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-md-4">
-					<div class="modal fade" id="user-delete" tabindex="-1" role="dialog" aria-labelledby="user-delete"
-						aria-hidden="true">
-						<div class="modal-dialog modal- modal-dialog-centered modal-" role="document">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h6 class="modal-title" id="modal-title-default">회원 탈퇴 처리</h6>
-									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-										<span aria-hidden="true">×</span>
-									</button>
-								</div>
-								<div class="modal-body">
-									<p><span id="deleteNickname"></span>
-										<span>님을 탈퇴 처리하시겠습니까?</span>
-									</p>
-									<p>사용자의 정보들이 영구 삭제됩니다.</p>
-									<p class="display-none" id="deleteUserId"></p>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn bg-gradient-primary"
-										onclick="delete_btn()">Yes</button>
-									<button type="button" class="btn btn-link  ml-auto"
-										data-bs-dismiss="modal">No</button>
-								</div>
+			<button style='display: none;' type="button" id="modalBtn" data-bs-toggle="modal" data-bs-target="#exampleModalMessage">
+			</button>
+			<button style='display: none;' type="button" id="modalBtn2" data-bs-toggle="modal" data-bs-target="#exampleModalMessage2">
+			</button>
+			
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModalMessage" tabindex="-1" role="dialog"
+				aria-labelledby="exampleModalMessageTitle" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalLabel">상품 수정</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<input type="hidden" id="modalId">
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">키워드:</label>
+								<input type="text" class="form-control" id="modelKeyword">
 							</div>
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">원부옵션명:</label>
+								<input type="text" class="form-control" id="modelOnebuOptionName">
+							</div>
+							<div class="form-group">
+								<label for="recipient-name" class="col-form-label">nvmid:</label>
+								<input type="text" class="form-control" id="modalNvmid">
+							</div>
+							<div class="form-group">
+								<label for="message-text" class="col-form-label">메모:</label>
+								<textarea class="form-control" id="modalMemo"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn bg-gradient-secondary"
+								data-bs-dismiss="modal" id="modalClose">Close</button>
+							<button type="button" class="btn bg-gradient-primary" onclick="updateProduct();">수정</button>
 						</div>
 					</div>
 				</div>
 			</div>
-			<th:block th:include="layout/footer"></th:block>
+			
+		<th:block th:include="layout/historyTable"></th:block>
+		</div>
+
+		<th:block th:include="layout/footer"></th:block>
 		</div>
 	</main>
 </body>

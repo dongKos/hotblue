@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		// 세션 사용 안함
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 				// web 관리자 logout시 redirect url
-				.logout().logoutSuccessUrl("/loginPage")
+				.logout().logoutSuccessUrl("/")
 				// 로그아웃 시, jwt token 들어있는 쿠키 삭제
 				.invalidateHttpSession(true).deleteCookies("Authorization", "Refresh").and()
 				.addFilter(corsConfig.corsFilter())
@@ -60,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/selenium/**").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/init/**").permitAll();
 		http.authorizeRequests().antMatchers(HttpMethod.GET, "/swagger-ui**").permitAll();
+		http.authorizeRequests().antMatchers(HttpMethod.GET, "/").permitAll();
 		
 		http.authorizeRequests().antMatchers("/sns/**").permitAll();
 

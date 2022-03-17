@@ -22,4 +22,11 @@ public class SeleniumController extends RestControllerUtil{
 		seleniumService.work();
 		return new ResponseEntity<SuccessResponse>(super.successResponse(null), HttpStatus.OK);
 	}
+	
+	
+	@GetMapping("/multiWork")
+	public ResponseEntity<SuccessResponse> multiWork() {
+		seleniumService.multiWork();
+		return new ResponseEntity<SuccessResponse>(super.successResponse(null), HttpStatus.OK);
+	}
 }

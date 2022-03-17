@@ -15,6 +15,21 @@ spring:
       on-profile: "local"
 chrome-driver: 
   path: '/driver/chromedriver.exe'
+logging:
+    level:
+        root: info
+        org:
+            hibernate:
+                SQL: DEBUG
+                type:
+                    descriptor:
+                        sql: 
+                            BasicBinder: TRACE
+            springframework:
+                jdbc:
+                    core:
+                        JdbcTemplate: DEBUG
+                        StatementCreatorUtils: TRACE
 ---
 server:
   port: 5000
@@ -68,22 +83,10 @@ spring:
 logging:
     level:
         root: info
-        org:
-            hibernate:
-                SQL: DEBUG
-                type:
-                    descriptor:
-                        sql: 
-                            BasicBinder: TRACE
-            springframework:
-                jdbc:
-                    core:
-                        JdbcTemplate: DEBUG
-                        StatementCreatorUtils: TRACE
 server:
     error:
       include-stacktrace: never
-      path: '/error'
+      path: '/home'
       whitelabel:
         enabled: false 
     servlet:

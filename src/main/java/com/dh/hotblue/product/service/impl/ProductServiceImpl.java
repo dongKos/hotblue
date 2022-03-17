@@ -7,11 +7,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.dh.hotblue.product.dto.ProductDto.ProductList;
+import com.dh.hotblue.product.dto.ProductDto.ProductResponse;
 import com.dh.hotblue.product.dto.ProductDto.ProductSearch;
 import com.dh.hotblue.product.entity.ProductEntity;
 import com.dh.hotblue.product.entity.QProductEntity;
@@ -52,7 +53,8 @@ public class ProductServiceImpl implements ProductService {
 				optPrd.get().setOnebuOptionName(prd.getOnebuOptionName());
 				productRepository.save(optPrd.get());
 			} else {
-				list.add(prd);
+				if(!prd.getKeyword().equals("") && !prd.getNvmid().equals(""))
+					list.add(prd);
 			}
 		}
 		productRepository.saveAll(list);
@@ -60,22 +62,95 @@ public class ProductServiceImpl implements ProductService {
 	}
 
 	@Override
-	public List<ProductList> findProduct(ProductSearch search) {
-		BooleanBuilder builder = new BooleanBuilder();
+	public List<ProductList> findAll(ProductSearch search) {
 		QProductEntity product = QProductEntity.productEntity;
-		return jpaQueryFactory.select(Projections.constructor(ProductList.class, 
-				product.id, 
-				product.keyword,
-				product.shopName, 
-				product.onebuRank, 
-				product.onebuInnerRank,
-				product.prdRank, 
-				product.workDate, 
-				product.memo,
-				product.createdDateTime,
-				product.nvmid
-				))
-				.from(product).where(builder).fetch();
+		BooleanBuilder builder = new BooleanBuilder();
+		if(StringUtils.hasText(search.getKeyword())){
+			builder.and(product.keyword.contains(search.getKeyword()));
+		}
+		if(StringUtils.hasText(search.getShopName())){ 
+			builder.and(product.shopName.contains(search.getShopName()));
+		}
+		if(StringUtils.hasText(search.getNvmid())){ 
+			builder.and(product.nvmid.contains(search.getNvmid()));
+		}
+		if(StringUtils.hasText(search.getMemo())){ 
+			builder.and(product.memo.contains(search.getMemo()));
+		}
+		
+		return jpaQueryFactory.select(Projections.constructor(
+				ProductList.class, 
+						product.id, 
+						product.keyword,
+						product.shopName, 
+						product.onebuRank, 
+						product.onebuInnerRank,
+						product.prdRank,
+						product.prvOnebuRank,
+						product.prvOnebuInnerRank,
+						product.prvPrdRank,
+						product.workDate, 
+						product.memo,
+						product.createdDateTime,
+						product.nvmid,
+						product.onebuOptionName,
+						product.onebuLink,
+						product.singlePrdLink
+					))
+					.from(product)
+					.where(builder)
+//					.orderBy(product.createdDateTime.asc())
+					.fetch();
 	}
+
+	@Override
+	public ProductResponse findOne(long id) {
+		QProductEntity product = QProductEntity.productEntity;
+		return jpaQueryFactory.select(Projections.constructor(
+				ProductResponse.class, 
+						product.id, 
+						product.keyword,
+						product.onebuOptionName,
+						product.nvmid,
+						product.memo
+					))
+					.from(product)
+					.where(product.id.eq(id))
+					.fetchFirst();
+	}
+
+	@Transactional
+	@Override
+	public boolean update(ProductEntity product) {
+		Optional<ProductEntity> optPrd = productRepository.findById(product.getId());
+		if(optPrd.isPresent()) {
+			optPrd.get().setKeyword(product.getKeyword());
+			optPrd.get().setNvmid(product.getNvmid());
+			optPrd.get().setOnebuOptionName(product.getOnebuOptionName());
+			optPrd.get().setMemo(product.getMemo());
+			productRepository.save(optPrd.get());
+		}
+		return true;
+	}
+
+	@Override
+	public boolean delete(long id) {
+		productRepository.deleteById(id);
+		return true;
+	}
+
+	@Override
+	public ProductEntity save(ProductEntity product) {
+		return productRepository.save(product);
+	}
+
+	@Transactional
+	@Override
+	public List<ProductEntity> findAllTest() {
+		List<ProductEntity> list =productRepository.findAllEntityGraph();
+		System.out.println(list.size());
+		return list;
+	}
+	
 
 }

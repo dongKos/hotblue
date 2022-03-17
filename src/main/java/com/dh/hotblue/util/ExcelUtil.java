@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 public class ExcelUtil {
 	// 각 셀의 데이터타입에 맞게 값 가져오기
@@ -74,7 +73,6 @@ public class ExcelUtil {
 						for (columnIndex = 0; columnIndex <= cells; columnIndex++) {
 							XSSFCell cell = row.getCell(columnIndex);
 							map.put(String.valueOf(columnIndex), getCellValue(cell));
-							log.info(rowIndex + " 행 : " + columnIndex+ " 열 = " + getCellValue(cell));
 						}
 						
 						excelList.add(map);

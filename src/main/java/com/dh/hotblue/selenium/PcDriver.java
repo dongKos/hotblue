@@ -18,6 +18,7 @@ public class PcDriver {
 		options = new ChromeOptions();
 		if(profile.equals("product"))
 			options.addArguments("--headless", "--disable-dev-shm-usage", "--no-sandbox");
+		System.out.println(options);
 		return new ChromeDriver(options);
 	}
 }

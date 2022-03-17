@@ -1,17 +1,15 @@
 package com.dh.hotblue.schedule;
 
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 
-import org.openqa.selenium.PageLoadStrategy;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.dh.hotblue.selenium.service.SeleniumService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,23 +19,17 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 public class Scheduler {
-	
-	@Value("${chrome-driver.path}") String path;
+	@Autowired SeleniumService seleniumService;
 	@Value("${spring.profiles.active}") String profile;
 	
-	//10분마다 buddyCnt 업데이트
-//	@Scheduled(cron = "0 0/10 * * * *")
+	//30분마다 실행
+	@Scheduled(cron = "0 0 0/1 1/1 * ?")
 	public void updateBuddyCnt() {
-		logStartTime("updateBuddyCnt : ");
-		System.out.println("path : " + path);
-		
-		System.setProperty("webdriver.chrome.driver", path);
-		ChromeOptions options;
-		options = new ChromeOptions();
-		System.out.println(profile);
-		if(profile.equals("product"))
-			options.addArguments("--headless", "--disable-dev-shm-usage", "--no-sandbox");
-		WebDriver driver = new ChromeDriver(options);
+		if(profile.equals("product")) {
+			logStartTime("startTime : ");
+			seleniumService.multiWork();
+			logStartTime("endTime : ");
+		}
 	}
 
 	private void logStartTime(String txt) {
