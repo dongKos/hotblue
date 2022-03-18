@@ -14,6 +14,6 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long>{
 	Optional<ProductEntity> findByNvmid(String nvmid);
 
 	@EntityGraph(attributePaths = "histories")
-	@Query("select distinct a from ProductEntity a")
+	@Query("select distinct a from ProductEntity a where successYn = 'Y'")
 	List<ProductEntity> findAllEntityGraph();
 }

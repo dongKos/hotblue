@@ -128,6 +128,7 @@ public class ProductServiceImpl implements ProductService {
 			optPrd.get().setNvmid(product.getNvmid());
 			optPrd.get().setOnebuOptionName(product.getOnebuOptionName());
 			optPrd.get().setMemo(product.getMemo());
+			optPrd.get().setSuccessYn("Y");
 			productRepository.save(optPrd.get());
 		}
 		return true;

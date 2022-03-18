@@ -82,7 +82,7 @@ public class ProductEntity {
 	private String nvmid;
 	
 	@ApiModelProperty(value="성공여부")
-	private String successYn;
+	private String successYn = "Y";
 	
 	@ApiModelProperty(value="사용여부")
 	private String useYn = "Y";

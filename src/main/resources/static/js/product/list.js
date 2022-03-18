@@ -7,9 +7,9 @@ $(function() {
 	});
 
 	$('#file').on('change', excelUpload);
-	
+
 	$('.search_area input').on('keyup', function(e) {
-		if(e.keyCode == 13) getProducts();
+		if (e.keyCode == 13) getProducts();
 	});
 	$('#searchBtn').on('click', function() {
 		getProducts();
@@ -20,6 +20,7 @@ $(function() {
 });
 
 function getProducts() {
+	$('body').css('opacity', '0.5');
 	var data = {
 		'keyword': $("#schKeyword").val(),
 		'shopName': $('#schShopName').val(),
@@ -31,9 +32,11 @@ function getProducts() {
 		url: "/product",
 		data: data,
 		success: function(data) {
-			console.log(data);
-			if (data.data != null)
+			$('body').css('opacity', '1');
+			if (data.data != null) {
 				initPrdData(data.data);
+								
+			}
 		},
 		error: function(err) {
 			console.log("err:", err)
@@ -43,7 +46,7 @@ function getProducts() {
 
 function saveProduct() {
 	var confirm = window.confirm("등록하시겠습니까?");
-	if(!confirm) return;
+	if (!confirm) return;
 	var data = {
 		'keyword': $("#saveKeyword").val(),
 		'onebuOptionName': $('#saveOnebuOptionName').val(),
@@ -55,9 +58,14 @@ function saveProduct() {
 		url: "/product/save",
 		data: data,
 		success: function(data) {
-			console.log(data);
-			if (data.code == '200')
+			if (data.code == '200') {
+				alert('성공');
+				$("#saveKeyword").val('');
+				$('#saveOnebuOptionName').val('');
+				$('#saveNvmid').val('');
+				$('#saveMemo').val('');
 				getProducts();
+			}
 		},
 		error: function(err) {
 			console.log("err:", err)
@@ -74,8 +82,7 @@ function excelUpload() {
 		enctype: 'multipart/form-data',
 		data: new FormData($('#form')[0]),
 		success: function(data) {
-			console.log(data);
-			if(data.code == 200) {
+			if (data.code == 200) {
 				alert("성공");
 				location.reload();
 			}
@@ -87,7 +94,7 @@ function excelUpload() {
 }
 
 function dtForm(date) {
-	if(date == null || date.length == 0)
+	if (date == null || date.length == 0)
 		return "";
 	var ymd = date.split('T')[0];
 	var m = ymd.split('-')[1];
@@ -104,16 +111,16 @@ function initPrdData(items) {
 		var idx = 1;
 		for (var i = 0; i < items.length; i++) {
 			var classNm = "";
-			if(items[i].onebuRank == 0 && items[i].onebuInnerRank == 0 && items[i].prdRank == 0) {
+			if (items[i].onebuRank == 0 && items[i].onebuInnerRank == 0 && items[i].prdRank == 0) {
 				classNm = "work-fail";
 			}
 			var href = "";
-			if(items[i].singlePrdLink == '' || items[i].singlePrdLink == null) {
-				href=items[i].onebuLink;
+			if (items[i].singlePrdLink == '' || items[i].singlePrdLink == null) {
+				href = items[i].onebuLink;
 			} else {
-				href=items[i].singlePrdLink;
+				href = items[i].singlePrdLink;
 			}
-				
+
 			var html = "<tr class='" + classNm + "'>";
 			html += "<td style='display: none;' name='id'>" + items[i].id + "</td>";
 			html += "<td><p class='text-sm font-weight-bold mb-0 px-3'>" + idx++ + "</p></td>";
@@ -125,8 +132,8 @@ function initPrdData(items) {
 			html += "<td class='text-center'><p class='text-sm font-weight-bold mb-0 pointer'>" + commonUtil.getRankText(items[i].prvOnebuInnerRank, items[i].onebuInnerRank) + "</p></td>";
 			html += "<td class='text-center'><p class='text-sm font-weight-bold mb-0 pointer'>" + commonUtil.getRankText(items[i].prvPrdRank, items[i].prdRank) + "</p></td>";
 			html += "<td class='text-center align-middle'><p class='text-sm font-weight-bold mb-0'>" + dtForm(items[i].workDate) + "</p></td>";
-			html += "<td class='align-middle'><p class='text-sm font-weight-bold mb-0 pointer' name='memo' style='color : #cb0c9f;'>" + ((items[i].memo == null || items[i].memo == '')?"없음":items[i].memo) + "</p></td>";
-			html += "<td class='align-middle'><button type='button' style='margin-bottom: 0; padding: 0.25rem 0.5rem;' class='btn btn-danger' onclick='deleteProduct(" + items[i].id+ ");'>삭제</button></td>";
+			html += "<td class='align-middle'><p class='text-sm font-weight-bold mb-0 pointer' name='memo' style='color : #cb0c9f;'>" + ((items[i].memo == null || items[i].memo == '') ? "없음" : items[i].memo) + "</p></td>";
+			html += "<td class='align-middle'><button type='button' style='margin-bottom: 0; padding: 0.25rem 0.5rem;' class='btn btn-danger' onclick='deleteProduct(" + items[i].id + ");'>삭제</button></td>";
 			html += "</tr>";
 
 			tbody.append(html);
@@ -149,10 +156,10 @@ function initPrdData(items) {
 
 		tbody.append(html);
 	}
-	
+
 	$('.pointer').on('click', function() {
 		var name = $(this).attr('name');
-		if(name == 'memo') {
+		if (name == 'memo') {
 			$('#modalBtn').click();
 			initDetail($(this).parent().siblings('td[name="id"]').text());
 		} else {
@@ -163,20 +170,16 @@ function initPrdData(items) {
 }
 
 function initHistoryData(items) {
-	console.log(items);
 	var tbody = $('#historyTable tbody');
 	$(tbody).html('');
 	if (items.length > 0) {
-		var idx = 1;
 		for (var i = 0; i < items.length; i++) {
-				
 			var html = "<tr>";
 			html += "<td class='text-center'><p class='text-sm font-weight-bold mb-0 pointer'>" + items[i].onebuRank + "</p></td>";
 			html += "<td class='text-center'><p class='text-sm font-weight-bold mb-0 pointer'>" + items[i].onebuInnerRank + "</p></td>";
 			html += "<td class='text-center'><p class='text-sm font-weight-bold mb-0 pointer'>" + items[i].prdRank + "</p></td>";
 			html += "<td class='text-center align-middle'><p class='text-sm font-weight-bold mb-0'>" + dtForm(items[i].workDate) + "</p></td>";
 			html += "</tr>";
-
 			tbody.append(html);
 		}
 	} else {
@@ -201,9 +204,8 @@ function initHistoryData(items) {
 
 function initDetail(id) {
 	$.ajax({
-		url: "/product/detail/"+id,
+		url: "/product/detail/" + id,
 		success: function(data) {
-			console.log(data);
 			$('#modalId').val(data.data.id);
 			$('#modelKeyword').val(data.data.keyword);
 			$('#modelOnebuOptionName').val(data.data.onebuOptionName);
@@ -217,12 +219,11 @@ function initDetail(id) {
 }
 
 function initHistoryDetail(id) {
-	console.log(id);
 	$.ajax({
-		url: "/history/"+id,
+		url: "/history/" + id,
 		success: function(data) {
 			console.log(data);
-			if(data.data != null) {
+			if (data.data != null) {
 				initHistoryData(data.data);
 			}
 		},
@@ -233,7 +234,7 @@ function initHistoryDetail(id) {
 }
 function updateProduct() {
 	var confirm = window.confirm("수정하시겠습니까?");
-	if(!confirm) return;
+	if (!confirm) return;
 	var data = {
 		id: $('#modalId').val().trim(),
 		keyword: $('#modelKeyword').val().trim(),
@@ -247,8 +248,10 @@ function updateProduct() {
 		data: JSON.stringify(data),
 		contentType: 'application/json; charset=UTF-8',
 		success: function(data) {
-			console.log(data);
-			getProducts();
+			if(data.code == 200) {
+				alert('성공');
+				getProducts();
+			}
 		},
 		error: function(err) {
 			console.log("err:", err)
@@ -259,13 +262,15 @@ function updateProduct() {
 
 function deleteProduct(id) {
 	var confirm = window.confirm("삭제하시겠습니까?");
-	if(!confirm) return;
+	if (!confirm) return;
 	$.ajax({
 		type: "DELETE",
-		url: "/product/delete/"+id,
+		url: "/product/delete/" + id,
 		success: function(data) {
-			console.log(data);
-			getProducts();
+			if(data.code == 200) {
+				alert('성공');
+				getProducts();
+			}
 		},
 		error: function(err) {
 			console.log("err:", err)

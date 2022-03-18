@@ -232,6 +232,9 @@ public class SeleniumServiceImpl implements SeleniumService {
 		log.info(driverIdx + "번 드라이버 시작 : " + prds.size());
 		WebDriver driver = pcDriver.getPcDriver();
 		JavascriptExecutor js = (JavascriptExecutor) driver;
+//		js.executeScript("Object.defineProperty(navigator, 'plugins', {get: function() {return[1, 2, 3, 4, 5]}})");
+//		js.executeScript("Object.defineProperty(navigator, 'languages', {get: function() {return ['ko-KR', 'ko']}})");
+//		js.executeScript("const getParameter = WebGLRenderingContext.getParameter;WebGLRenderingContext.prototype.getParameter = function(parameter) {if (parameter === 37445) {return 'NVIDIA Corporation'} if (parameter === 37446) {return 'NVIDIA GeForce GTX 980 Ti OpenGL Engine';}return getParameter(parameter);};");
 		LocalDateTime now = LocalDateTime.now();
 		int workCnt = 0;
 		for(ProductEntity prd : prds) {
@@ -430,7 +433,7 @@ public class SeleniumServiceImpl implements SeleniumService {
 	@Override
 	public void multiWork() {
 		List<ProductEntity> prds = productRepository.findAllEntityGraph();
-		int driverCnt = 3;
+		int driverCnt = 5;
 		ArrayList<ArrayList<ProductEntity>> arrList = new ArrayList<ArrayList<ProductEntity>>();
 		for (int cnt = 0; cnt < driverCnt; cnt++) {
 			arrList.add(new ArrayList<ProductEntity>());

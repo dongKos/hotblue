@@ -18,18 +18,18 @@ chrome-driver:
 logging:
     level:
         root: info
-#        org:
-#            hibernate:
-#                SQL: DEBUG
-#                type:
-#                    descriptor:
-#                        sql: 
-#                            BasicBinder: TRACE
-#            springframework:
-#                jdbc:
-#                    core:
-#                        JdbcTemplate: DEBUG
-#                        StatementCreatorUtils: TRACE
+        org:
+            hibernate:
+                SQL: DEBUG
+                type:
+                    descriptor:
+                        sql: 
+                            BasicBinder: TRACE
+            springframework:
+                jdbc:
+                    core:
+                        JdbcTemplate: DEBUG
+                        StatementCreatorUtils: TRACE
 ---
 server:
   port: 5000
