@@ -421,7 +421,7 @@ public class SeleniumServiceImpl implements SeleniumService {
 				productRepository.save(prd);
 			} catch(Exception e) {
 				log.info(driverIdx + " 번 드라이버 실패!");
-				e.printStackTrace();
+				log.info(e.getMessage());
 			}
 		}
 		driver.quit();

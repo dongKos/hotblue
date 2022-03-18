@@ -69,13 +69,14 @@ function excelUpload() {
 	$.ajax({
 		type: "POST",
 		url: "/product/excelUpload",
-		processa: false,
 		contentType: false,
+		processData: false,
 		enctype: 'multipart/form-data',
 		data: new FormData($('#form')[0]),
 		success: function(data) {
 			console.log(data);
 			if(data.code == 200) {
+				alert("성공");
 				location.reload();
 			}
 		},

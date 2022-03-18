@@ -23,7 +23,7 @@ public class Scheduler {
 	@Value("${spring.profiles.active}") String profile;
 	
 	//@Scheduled(cron = "0 0 0/1 1/1 * ?")	//1시간
-	@Scheduled(cron = "0 0 0/2 1/1 * ?")	//2시간
+//	@Scheduled(cron = "0 0 0/2 1/1 * ?")	//2시간
 	public void updateBuddyCnt() {
 		if(profile.equals("product")) {
 			logStartTime("startTime : ");
